@@ -50,7 +50,7 @@ body{
   top: 90px;
 }
 .hr2{
-  top: 180px;
+  top: 189px;
 }
 
 .hr3{
@@ -68,6 +68,8 @@ body{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   content: normal;
+  margin-top: 3px;
+  gap: 3px;
 }
 
 .square{
@@ -75,4 +77,30 @@ body{
   align-items: center;
   justify-content: center;
   font-size: 65px;
+}
+.squareUnsed:hover{
+  cursor: pointer;
+}
+
+.container_buttons_info {
+  display: flex;
+  gap: 10px;
+  margin: 26px;
+}
+
+.button_info {
+  background: none;
+  border: 1px solid;
+  border-radius: 18px;
+  padding: 3px 5px;
+  font-size: 30px;
+  color: var(--text-color-secondary);
+}
+
+.button_info:hover{
+  color: var(--text-color-primary);
+}
+
+.button_info:active{
+  color: var(--text-color-secondary);
 }
