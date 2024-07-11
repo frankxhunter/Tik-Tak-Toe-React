@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Game_Info from "./Game_Info"
 import Board from "./Board"
 
 export default function Game() {
@@ -42,7 +41,6 @@ export default function Game() {
     <div className="game-board">
       <Board nextValue={next} squares={currentBoard} handleOnClick={handlePlay} />
     </div>
-    <Game_Info moves={moves} ></Game_Info>
     <div className="game-info">
         <button onClick={invertDirection}>{isAscending ? "Ascendiente" : "Descendiente"}</button>
         <ul>
