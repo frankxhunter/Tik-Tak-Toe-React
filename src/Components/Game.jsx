@@ -8,7 +8,6 @@ export default function Game() {
   const currentBoard = history[currentMove];
   const next = currentMove % 2 === 0 ? "X" : "O"
 
-
   function handlePlay(squares) {
     setHistory([...history.slice(0, currentMove + 1), squares])
     setCurrentMove(currentMove + 1)

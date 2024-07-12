@@ -1,21 +1,37 @@
-import React from "react"
+import React, { useState } from "react"
 import Square from "./Square"
 import JSConfetti from "js-confetti"
 import { useEffect } from "react"
 
 export default function Board({ nextValue, squares, handleOnClick }) {
   const { winner, whichWinners, positionLineWin } = calculateWinner(squares)
+  const [table , setTable] = useState(false)
 
   const confetti = React.useRef(null)
 
-  useEffect(()=>{
-    confetti.current = new JSConfetti();
-  },[])
 
-  useEffect(()=>{
-    if(winner)
-    confetti.current.addConfetti();
-  },[winner])
+
+
+  useEffect(() => {
+    confetti.current = new JSConfetti();
+
+  }, [])
+
+  useEffect(() => {
+    const empties = squares.filter((e) => e === "");
+    if (empties.length === 0) {
+      setTable(true)
+    }
+
+  }, [squares])
+
+
+
+  useEffect(() => {
+    if (winner){
+      confetti.current.addConfetti();
+    }
+  }, [winner])
 
   function handleClick(i) {
     if (squares[i] === "" && winner == null) {
@@ -64,13 +80,20 @@ export default function Board({ nextValue, squares, handleOnClick }) {
     return result
   }
 
+  function calcuteWinner(){
+    if(winner)
+      return <h3 className="status" >El ganador es: <span className="status-value" >{winner}</span></h3>
+    else if (table)
+      return <h3 className="status" >El juego a quedado en tablas</h3>
+    else 
+      return <h3 className="status" >Siguiente jugador: <span className="status-value" >{nextValue}</span></h3>
+
+  }
+
   return <>
 
-    {winner ?
-      <h3 className="status" >El ganador es: <span className="status-value" >{winner}</span></h3>
-      :
-      <h3 className="status" >Siguiente jugador: <span className="status-value" >{nextValue}</span></h3>
-
+    {
+      calcuteWinner()
     }
     <div className="game-table">
       <hr className="game-hr hr1" />
