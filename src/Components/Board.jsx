@@ -1,41 +1,63 @@
+import React from "react"
 import Square from "./Square"
+import JSConfetti from "js-confetti"
+import { useEffect } from "react"
 
 export default function Board({ nextValue, squares, handleOnClick }) {
-  const { winner, whichWinners } = calculateWinner(squares)
+  const { winner, whichWinners, positionLineWin } = calculateWinner(squares)
+
+  const confetti = React.useRef(null)
+
+  useEffect(()=>{
+    confetti.current = new JSConfetti();
+  },[])
+
+  useEffect(()=>{
+    if(winner)
+    confetti.current.addConfetti();
+  },[winner])
 
   function handleClick(i) {
     if (squares[i] === "" && winner == null) {
       const nextSquares = squares.slice()
       nextSquares[i] = nextValue
       handleOnClick(nextSquares)
-
     }
   }
 
   function calculateWinner(squares) {
     const result = {
       winner: null,
-      whichWinners: Array(9).fill(false)
+      whichWinners: Array(9).fill(false),
+      positionLineWin: {
+        top: 0,
+        left: 0,
+        angulo: 0,
+
+      }
     }
     const lines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [6, 4, 2],
+      { winner: [0, 1, 2], positionLineWin: { top: 42, left: 0, angulo: 0 } },
+      { winner: [3, 4, 5], positionLineWin: { top: 142, left: 0, angulo: 0 } },
+      { winner: [6, 7, 8], positionLineWin: { top: 242, left: 0, angulo: 0 } },
+      { winner: [0, 3, 6], positionLineWin: { top: 140, left: -103, angulo: 90 } },
+      { winner: [1, 4, 7], positionLineWin: { top: 140, left: 0, angulo: 90 } },
+      { winner: [2, 5, 8], positionLineWin: { top: 140, left: 100, angulo: 90 } },
+      { winner: [0, 4, 8], positionLineWin: { top: 134, left: -8, angulo: 45 } },
+      { winner: [6, 4, 2], positionLineWin: { top: 134, left: 3, angulo: 135 } },
+
+
     ]
     for (let i = 0; i < lines.length && !result.winner; i++) {
-      const a = lines[i][0]
-      const b = lines[i][1]
-      const c = lines[i][2]
+      const a = lines[i].winner[0]
+      const b = lines[i].winner[1]
+      const c = lines[i].winner[2]
       if (squares[a] !== "" && squares[a] === squares[b] && squares[a] === squares[c]) {
         result.winner = squares[a];
         result.whichWinners[a] = true;
         result.whichWinners[b] = true;
         result.whichWinners[c] = true;
+        result.positionLineWin = lines[i].positionLineWin
 
       }
     }
@@ -55,6 +77,17 @@ export default function Board({ nextValue, squares, handleOnClick }) {
       <hr className="game-hr hr2" />
       <hr className="game-hr hr3" />
       <hr className="game-hr hr4" />
+      <hr className="game-hr hrWinner"
+        style={
+          !winner ?
+            { display: "none" }
+            : {
+              top: positionLineWin.top + "px",
+              left: positionLineWin.left + "px",
+              transform: "rotate(" + positionLineWin.angulo + "deg)",
+            }
+        } />
+
       {(Array(3).fill(null)).map((_, rowIndex) => (
         <div className="board-row" key={rowIndex}>
           {
