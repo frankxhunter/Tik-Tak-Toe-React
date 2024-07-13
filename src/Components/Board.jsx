@@ -22,6 +22,9 @@ export default function Board({ nextValue, squares, handleOnClick }) {
     if (empties.length === 0) {
       setTable(true)
     }
+    else{
+      setTable(false)
+    }
 
   }, [squares])
 
